@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor do Sistema</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #f1f5f9;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      color: #38bdf8;
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .label {
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .valor {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #38bdf8;
+      word-wrap: break-word;
+    }
+    footer {
+      margin-top: 30px;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    .specs {
+      margin-top: 40px;
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .specs h2 {
+      color: #38bdf8;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .specs p {
+      margin: 6px 0;
+      color: #e2e8f0;
+      font-size: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>💻 Monitor do Sistema</h1>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Temperatura CPU</div>
+      <div class="valor" id="cpuTemp">-- °C</div>
+    </div>
+    <div class="card">
+      <div class="label">Uso CPU</div>
+      <div class="valor" id="cpuUso">-- %</div>
+    </div>
+    <div class="card">
+      <div class="label">Temperatura GPU</div>
+      <div class="valor" id="gpuTemp">-- °C</div>
+    </div>
+    <div class="card">
+      <div class="label">Memória Usada</div>
+      <div class="valor" id="ramUso">-- GB</div>
+    </div>
+  </div>
+
+  <div class="specs">
+    <h2>🧠 Especificações do Sistema</h2>
+    <p id="cpuModelo">CPU: --</p>
+    <p id="gpuModelo">GPU: --</p>
+    <p id="sistema">Sistema: --</p>
+    <p id="uptime">Tempo ligado: --</p>
+    <p id="memTotal">Memória total: -- GB</p>
+  </div>
+
+  <footer>Atualiza automaticamente a cada 3 segundos 🔄</footer>
+
+  <script>
+    async function atualizarDados() {
+      try {
+        const res = await fetch("http://localhost:3000/info");
+        const data = await res.json();
+        
+        // Dados em tempo real
+        document.getElementById("cpuTemp").textContent = data.temperaturaCPU || "N/D";
+        document.getElementById("cpuUso").textContent = data.usoCPU || "N/D";
+        document.getElementById("gpuTemp").textContent = data.temperaturaGPU || "N/D";
+        document.getElementById("ramUso").textContent = data.memoriaUsada || "N/D";
+
+        // Especificações
+        document.getElementById("cpuModelo").textContent = `CPU: ${data.cpuModelo || "N/D"}`;
+        document.getElementById("gpuModelo").textContent = `GPU: ${data.gpuModelo || "N/D"}`;
+        document.getElementById("sistema").textContent = `Sistema: ${data.sistemaOperacional || "N/D"}`;
+        document.getElementById("uptime").textContent = `Tempo ligado: ${data.uptime || "N/D"}`;
+        document.getElementById("memTotal").textContent = `Memória total: ${data.memoriaTotal || "N/D"} GB`;
+
+      } catch (err) {
+        console.error("Erro ao atualizar dados:", err);
+      }
+    }
+
+    atualizarDados();
+    setInterval(atualizarDados, 3000);
+  </script>
+</body>
+</html>
