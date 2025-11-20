@@ -57,6 +57,7 @@ app.get("/info", async (req, res) => {
             );
 
             if (cpuTemp) temperaturaCPU = cpuTemp.Value;
+            console.log(temperaturaCPU)
           }
 
           // GPU temperatura
