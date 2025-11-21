@@ -55,10 +55,12 @@ app.get("/info", async (req, res) => {
             const cpuTemp = sensores.find(s =>
               (
                 s.Text.toLowerCase().includes("cpu") &&
+                (
                 s.Text.toLowerCase().includes("core") ||
                 s.Text.toLowerCase().includes("package") ||
                 s.Text.toLowerCase().includes("tctl") ||
                 s.Text.toLowerCase().includes("tdie")
+                )
               )
             );
 
