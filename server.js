@@ -47,27 +47,48 @@ app.get("/info", async (req, res) => {
           // Achar grupo Temperatures dentro de cada item
           const tempGroup = item.Children?.find((c) => c.Text === "Temperatures");
           if (!tempGroup) continue;
+
           const sensores = tempGroup.Children;
-          // CPU está no item da placa-mãe (Gigabyte), não no processador AMD Ryzen
-          if (item.Text.includes("AMD Ryzen")) {
+
+          // Detectar automaticamente temperatura da CPU
+          if (sensores && sensores.length > 0) {
             const cpuTemp = sensores.find(s =>
-              s.Text.includes("Core") ||
-              s.Text.includes("Tctl") ||
-              s.Text.includes("Tdie")
+              (
+                s.Text.toLowerCase().includes("cpu") &&
+                s.Text.toLowerCase().includes("core") ||
+                s.Text.toLowerCase().includes("package") ||
+                s.Text.toLowerCase().includes("tctl") ||
+                s.Text.toLowerCase().includes("tdie")
+              )
             );
 
-            if (cpuTemp) temperaturaCPU = cpuTemp.Value;
-            console.log(temperaturaCPU)
+            if (cpuTemp) {
+              temperaturaCPU = parseFloat(cpuTemp.Value.replace(",", ".")).toFixed(1);
+              console.log("Temp CPU:", temperaturaCPU);
+            }
           }
 
-          // GPU temperatura
-          if (item.Text.includes("NVIDIA")) {
-            const gpuTemp = sensores.find((s) => s.Text.includes("Core"));
+          // Detectar automaticamente temperatura da GPU
+          if (sensores && sensores.length > 0) {
+            const gpuTemp = sensores.find(s =>
+              (
+                s.Text.toLowerCase().includes("gpu") &&
+                (
+                  s.Text.toLowerCase().includes("core") ||
+                  s.Text.toLowerCase().includes("temperature") ||
+                  s.Text.toLowerCase().includes("edge") ||
+                  s.Text.toLowerCase().includes("hotspot")
+                )
+              )
+            );
+
             if (gpuTemp) {
               temperaturaGPU = parseFloat(gpuTemp.Value.replace(",", ".")).toFixed(1);
+              console.log("Temp GPU:", temperaturaGPU);
             }
           }
         }
+
       }
 
     } catch (erroLibre) {
