@@ -1,8 +1,3 @@
-Aqui está um **README completo, organizado e profissional**, explicando tudo sobre o projeto, incluindo as dependências, funcionamento, limitações e como usar o Libre Hardware Monitor para obter temperaturas.
-
-Você pode colar diretamente no GitHub.
-Se quiser, posso gerar também em **inglês** ou no padrão **Markdown avançado** com badges e imagens.
-
 ---
 
 # 📌 **README.md — Sistema de Monitoramento de Hardware (Node.js + Libre Hardware Monitor)**
@@ -193,12 +188,3 @@ Este projeto está sob a licença MIT.
 Use livremente!
 
 ---
-
-Se quiser, posso:
-
-✅ gerar um README estilizado com badges
-✅ adicionar imagens
-✅ criar exemplos com frontend
-✅ adicionar instruções para rodar com PM2 ou Docker
-
-Só pedir!
